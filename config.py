@@ -42,6 +42,7 @@ class ProberConfig:
     posref: str = "Z"  # MoveChuck reference: H home, Z zero, C center, R relative, D die home
     unit: str = "Y"  # Y = microns
     velocity: float = 100.0  # percent
+    theta_posref: str = "Z"  # MoveTheta reference: H home, Z zero, C center (unverified choice)
 
 
 @dataclass

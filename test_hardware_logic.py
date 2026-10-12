@@ -69,6 +69,17 @@ def test_velox_command_sequence():
     ]
 
 
+def test_velox_move_theta_before_xy():
+    t = FakeTransport([])
+    p = VeloxProber(t, posref="Z", unit="Y", velocity=100)
+    p.move_to(1.0, 2.0, -39.5)
+    assert t.sent == [
+        "MoveChuckSeparation 100",
+        "MoveTheta -39.5000 Z D 100",
+        "MoveChuck 1.0 2.0 Z Y 100",
+    ]
+
+
 def test_velox_error_code_raises():
     p = VeloxProber(FakeTransport(["0:", "615: Timeout During Command Execution"]))
     with pytest.raises(ProberError):

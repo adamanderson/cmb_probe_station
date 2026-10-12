@@ -27,6 +27,7 @@ port = 0                # TODO: set once the Velox transport is chosen
 posref = "Z"            # MoveChuck reference: H home, Z zero, C center, R relative, D die home
 unit = "Y"              # Y = microns
 velocity = 100          # percent
+theta_posref = "Z"     # MoveTheta reference: H home, Z zero, C center (unverified choice)
 
 [run]
 settle_s = 0.05         # wait after closing the mux before reading

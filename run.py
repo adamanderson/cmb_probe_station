@@ -59,7 +59,7 @@ def open_devices(cfg: Config, dry_run: bool, with_prober: bool):
             prober = None
             if with_prober:
                 p = cfg.prober
-                prober = VeloxProber(SocketTransport(p.host, p.port), p.posref, p.unit, p.velocity)
+                prober = VeloxProber(SocketTransport(p.host, p.port), p.posref, p.unit, p.velocity, p.theta_posref)
                 stack.callback(prober.close)
         dmm.configure()
         yield mux, dmm, prober

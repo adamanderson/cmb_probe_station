@@ -28,6 +28,7 @@ class Site:
     site_id: str
     x: float
     y: float
+    theta: Optional[float] = None  # chuck rotation, degrees counter-clockwise; None = leave as is
 
 
 @dataclass
@@ -58,7 +59,12 @@ def load_sites(path: str) -> list[Site]:
         missing = {"site_id", "x", "y"} - set(reader.fieldnames or [])
         if missing:
             raise ValueError(f"{path}: missing columns {sorted(missing)}")
-        sites = [Site(r["site_id"].strip(), float(r["x"]), float(r["y"])) for r in reader]
+        has_theta = "theta" in (reader.fieldnames or [])  # optional column
+        sites = [
+            Site(r["site_id"].strip(), float(r["x"]), float(r["y"]),
+                 float(r["theta"]) if has_theta and r["theta"].strip() else None)
+            for r in reader
+        ]
     ids = [s.site_id for s in sites]
     if len(ids) != len(set(ids)):
         raise ValueError(f"{path}: site_id values must be unique")
@@ -140,7 +146,7 @@ def run_sequence(
                 continue
             current = site
             _call(hooks.before_move, site)
-            prober.move_to(site.x, site.y)
+            prober.move_to(site.x, site.y, site.theta)
             prober.touchdown()
             _call(hooks.after_touchdown, site)
             rows: list[Result] = []

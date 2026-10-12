@@ -116,6 +116,8 @@ def test_load_sites(tmp_path):
     p = tmp_path / "s.csv"
     p.write_text("site_id,x,y\nA,1,2\nB,3.5,4\n")
     assert load_sites(str(p)) == [Site("A", 1.0, 2.0), Site("B", 3.5, 4.0)]
+    p.write_text("site_id,x,y,theta\nA,1,2,30\nB,3,4,\n")
+    assert load_sites(str(p)) == [Site("A", 1.0, 2.0, 30.0), Site("B", 3.0, 4.0, None)]
     p.write_text("site_id,x,y\nA,1,2\nA,3,4\n")
     with pytest.raises(ValueError):
         load_sites(str(p))
