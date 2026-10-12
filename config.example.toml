@@ -1,0 +1,33 @@
+# Example configuration. Every key shown is optional; the values are the defaults.
+
+[mux]
+bus = 1
+address = 0x44          # ADG729 default; the breakout's two address pins select 0x44-0x47
+# Switch bit (0-7) that closes probe pin 1..4 on the DA (meter HI) and DB (meter LO) sides.
+# ASSUMED ordering: check the ADG729 datasheet, then confirm with `selftest` on a resistor board.
+a_bits = [0, 1, 2, 3]
+b_bits = [4, 5, 6, 7]
+
+[dmm]
+port = "/dev/ttyUSB0"
+# Must match the 34401A front-panel I/O menu. Factory settings are 9600 baud, even parity
+# with 7 data bits; the meter's 2 stop bits and DTR/DSR handshake are fixed.
+baudrate = 9600
+bytesize = 7
+parity = "E"
+stopbits = 2
+dsrdtr = true
+timeout_s = 10.0
+range_ohms = 1e5        # fixed 100 kOhm range, covers 2-20 kOhm; autorange is never used
+nplc = 1.0
+
+[prober]
+host = "192.168.50.2"   # proposed address of the Velox PC on the private link
+port = 0                # TODO: set once the Velox transport is chosen
+posref = "Z"            # MoveChuck reference: H home, Z zero, C center, R relative, D die home
+unit = "Y"              # Y = microns
+velocity = 100          # percent
+
+[run]
+settle_s = 0.05         # wait after closing the mux before reading
+lock_file = "/tmp/probestation.lock"
